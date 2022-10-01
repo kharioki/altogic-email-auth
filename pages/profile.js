@@ -6,7 +6,7 @@ import ProfilePhoto from "../components/profile/ProfilePhoto";
 import NameSection from "../components/profile/NameSection";
 import ChangePassword from "../components/profile/ChangePassword";
 import ChangeEmail from "../components/profile/ChangeEmail";
-import { checkCookies, getCookie, removeCookies } from "cookies-next";
+import { hasCookie, getCookie, deleteCookie } from "cookies-next";
 import { Disclosure } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
@@ -86,7 +86,7 @@ function Profile(props) {
 export async function getServerSideProps({ req, res }) {
   let result;
   let tokenFromCookie;
-  if (checkCookies("token", { req, res })) {
+  if (hasCookie("token", { req, res })) {
     // Check if there is a token between the browser and the server.
     // Get the cookie.
     // Set the session for Altogic's built in fetcher so we can send requests.
@@ -107,7 +107,7 @@ export async function getServerSideProps({ req, res }) {
     };
   } else {
     //If token is not active anymore, remove the cookie and redirect to sign-in page.
-    removeCookies("token", {
+    deleteCookie("token", {
       req,
       res,
       sameSite: "none",
